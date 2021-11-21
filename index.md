@@ -1,37 +1,126 @@
-## Welcome to GitHub Pages
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sellsy - Test technique</title>
+        
+        <link rel="stylesheet" href="index.css">
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.0/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    </head>
 
-You can use the [editor on GitHub](https://github.com/Sinan49300/test-technique/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+    <body>
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+        <div id="app" class="container-fluid">
+            <div class="row">
+                <!------------ Title block ---------------->
+                <div class="row title-container" v-if="!panelActiveFilter || !mobileView">
+                    <span class="title col-10">{{titleText}}</span>
+                </div>
+                <div>
+                    <button class="button-hide button-toggle-filter" v-on:click="toggleFilterPanel('toggle')" v-if="mobileView">
+                        <i class="bi" v-bind:class="{'bi-list':!panelActiveFilter,'bi-x-circle-fill':panelActiveFilter}"></i>
+                    </button>
+                </div>
 
-### Markdown
+                <!-----------------Filtres panel------------------>
+                <div id="left-wrapper" class="col-md-2"  v-if="panelActiveFilter">
+                    <!-- Filtre Sexe-->
+                    <div>
+                        <div class="row">
+                            <p class="col-10 text-bold">Sexe {{selectedFilter.genders |filterTitleText}}</p>
+                            <i class="col-2 bi icon-adjust" v-if="!mobileView" v-bind:class="{'bi-chevron-up':panelActive.gender,'bi-chevron-down':!panelActive.gender}" v-on:click="panelActive.gender = !panelActive.gender"></i>
+                        </div>
+                        <div v-if="panelActive.gender">
+                            <ul class="ckeckBox-list">
+                                <li v-for="gender in genders">
+                                    <input type="checkbox" v-bind:id="gender" v-model="selectedFilter.genders" v-bind:value="gender">
+                                    <label v-bind:for ="gender">{{gender}}</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+                    <hr>
+                    <!-- Filtre Prix-->
+                    <div>
+                        <div class="row">
+                            <p class="text-bold col-10">Rechercher par prix {{selectedFilter.prices |filterTitleText}}</p>
+                            <i class="bi col-2 icon-adjust" v-if="!mobileView" v-bind:class="{'bi-chevron-up':panelActive.price,'bi-chevron-down':!panelActive.price}" v-on:click="panelActive.price = !panelActive.price"></i>
+                        </div>
+                        <div v-if="panelActive.price">
+                            <ul class="ckeckBox-list">
+                                <li v-for="price in prices" :key="price.label">
+                                    <input type="checkbox" v-bind:id="price" v-model="selectedFilter.prices" v-bind:value="price.values">
+                                    <label v-bind:for ="price">{{price.label}}</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
 
-```markdown
-Syntax highlighted code block
+                    <hr>
+                    <!-- Filtre Couleur-->
+                   <div>
+                       <div class="row">
+                            <p class="text-bold col-10">Couleur {{selectedFilter.colors |filterTitleText}}</p>
+                            <i class="bi col-2 icon-adjust" v-if="!mobileView" v-bind:class="{'bi-chevron-up':panelActive.color,'bi-chevron-down':!panelActive.color}" v-on:click="panelActive.color = !panelActive.color"></i>
+                       </div>
 
-# Header 1
-## Header 2
-### Header 3
+                        <div v-if="panelActive.color" class="row offset-1">
+                            <div class="ckeckBox-list col-4" v-for="color in colors" :key="color.value">
+                                <button class="button-hide" v-on:click="getSelectedColor(color)">
+                                    <div class="pastille-color" v-bind:id="color.value.toLowerCase()">
+                                        <i class="bi icon-check" v-bind:class="{'bi-check':color.active,'icon-check-white':color.value.toLowerCase() == 'blanc'}"></i>
+                                    </div>
+                                    <span>{{color.value}}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    <!-- Filtre Sport-->
+                    <div>
+                        <div class="row">
+                            <p class="text-bold col-10">Sports {{selectedFilter.activities |filterTitleText}}</p>
+                            <i class="bi col-2 icon-adjust" v-if="!mobileView" v-bind:class="{'bi-chevron-up':panelActive.activity,'bi-chevron-down':!panelActive.activity}" v-on:click="panelActive.activity = !panelActive.activity"></i>
+                        </div>
+                        <div v-if="panelActive.activity">
+                            <ul class="ckeckBox-list">
+                                <li v-for="activity in activities">
+                                    <input type="checkbox" v-bind:id="activity" v-model="selectedFilter.activities" v-bind:value="activity">
+                                    <label v-bind:for ="activity">{{activity}}</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
 
-- Bulleted
-- List
+                    <!------ Mobile button ------>
+                    <div class="button-panel-filter" v-if="mobileView">                  
+                        <hr>
+                        <button type="button" class="col-4 offset-1 button-filter" id="erase" v-on:click="eraseSelectedFilter()">Effacer {{selectedFilter |filterTitleText}}</button>
+                        <button type="button" class="col-4 offset-1 button-filter" id="apply" v-on:click="toggleFilterPanel('close')">Appliquer</button>              
+                    </div>
 
-1. Numbered
-2. List
+                </div>
+                <!-------------------- Products result container ----------------------->
+                <div id="main-wrapper" class="col-md-10" v-if="!panelActiveFilter || !mobileView"> 
+                    <div class="row">
+                        <div id="product-card" class="col-md-4 col-sm-6 col-12 " v-for="product in filterProducts">
+                            <img class="product-image" v-bind:src="getImage(product)"/>
+                            <p class="text-bold">{{product.article}}</p>
+                            <p>Chaussure pour {{product.sexe}}</p>
+                            <p> {{product.couleur | productColorText}}</p>
+                            <p class="text-bold">{{product.prix}}</p>
+                        </div>
+                    </div>
+                </div>
 
-**Bold** and _Italic_ and `Code` text
+            </div>
+        </div>
 
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Sinan49300/test-technique/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+        <script type="module" src="index.js"></script>
+    </body>
+</html>
