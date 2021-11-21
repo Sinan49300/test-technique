@@ -1,0 +1,128 @@
+/************* GLOBAL ***************/
+.product-image{
+    width: 100%;
+    height: auto;
+    max-height: 493.85px;
+}
+
+.text-bold {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.ckeckBox-list {
+    list-style: none;
+   padding-left: 5px;
+}
+
+.icon-adjust{
+    font-size: 20px;
+}
+
+.button-hide {
+    background-color: #fff;
+    border:none;
+}
+
+/*************** TITLE ****************/ 
+.title-container {
+    margin-bottom: 25px;
+}
+
+.title-container 
+.title{
+    font-size: 34px;
+    font-weight: bold;
+}
+
+ /***************** FILTR PANEL  ************/
+
+ #left-wrapper{
+     margin-bottom :65px;
+ }
+.button-panel-filter{
+    position: fixed;
+    bottom: 0px;
+    background: #fff;
+    /*height: 50px;*/
+    width:100%;
+}
+
+.button-filter {
+    border: 1px solid lightgray;
+    border-radius: 25px;
+    height:35px;
+    margin-bottom: 15px;
+
+}
+
+.button-panel-filter #apply {
+    background-color: #000;
+    color: #fff;
+}
+
+.button-panel-filter #erase {
+    background-color: #fff;
+    color: #000;
+}
+
+.button-toggle-filter {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 40px;
+    height: 40px;
+    font-size: 25px;
+}
+
+.icon-check{
+    color:#fff;
+    font-size: 20px;
+}
+
+.icon-check-white{
+    color:#000;
+    font-size: 20px;
+}
+
+.pastille-color {
+    border-radius: 50%;
+    width: 30px;
+    height:30px;
+}
+
+/*********** PASTILLE COLORS ****************/
+#noir {
+    background-color: black;
+}
+
+#rouge {
+    background-color: rgb(231, 53, 43);
+}
+
+#blanc {
+    background-color: white;
+    border: 1px solid black;
+}
+
+#jaune {
+    background-color: rgb(254, 213, 51);
+}
+
+#bleu {
+    background-color: rgb(23, 144, 200);
+}
+
+#rose {
+    background-color: rgb(240, 114, 143);
+}
+
+#vert {
+    background-color: rgb(123, 186, 60);
+}
+
+#gris {
+    background-color: rgb(117, 117, 117);
+}
+
+
